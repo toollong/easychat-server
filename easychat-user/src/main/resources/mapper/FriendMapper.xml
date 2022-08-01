@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easychat.user.mapper.FriendMapper">
+
+    <resultMap id="friendInfoMap" type="com.easychat.user.dto.FriendInfo">
+        <result property="userId" column="user_id"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="sessionTime" column="session_time"/>
+        <result property="friendUserId" column="friend_user_id"/>
+        <result property="friendRemark" column="friend_remark"/>
+        <result property="friendNickName" column="nick_name"/>
+        <result property="friendAvatar" column="avatar"/>
+        <result property="friendIntro" column="introduction"/>
+        <result property="friendTags" column="tags"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="selectFriendInfoList" parameterType="java.lang.String" resultMap="friendInfoMap">
+        select friend.user_id,
+               friend.session_id,
+               friend.session_time,
+               friend.friend_user_id,
+               friend.friend_remark,
+               friend.create_time,
+               user.nick_name,
+               user.avatar,
+               user.introduction,
+               user.tags
+        from easychat_friend friend
+                 left join easychat_user user
+                           on friend.friend_user_id = user.id
+        where friend.user_id = #{userId}
+    </select>
+
+    <select id="selectFriendInfo" parameterType="java.lang.String" resultMap="friendInfoMap">
+        select friend.user_id,
+               friend.session_id,
+               friend.session_time,
+               friend.friend_user_id,
+               friend.friend_remark,
+               friend.create_time,
+               user.nick_name,
+               user.avatar,
+               user.introduction,
+               user.tags
+        from easychat_friend friend
+                 left join easychat_user user
+                           on friend.friend_user_id = user.id
+        where friend.user_id = #{userId}
+          and friend.friend_user_id = #{friendUserId}
+    </select>
+
+</mapper>

@@ -1,0 +1,42 @@
+server:
+  port: 20010
+
+spring:
+  application:
+    name: easychat-gateway-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: ec0b2714-22be-45cc-800e-fa801b4e94db
+        cluster-name: shanghai
+        group: easychat
+    gateway:
+      #      httpclient:
+      #        connect-timeout: 1000
+      #        response-timeout: 5s
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "https://toollong.icu"
+            allowedMethods: "*"
+      routes:
+        - id: easychat_user_route
+          uri: lb://easychat-user-service
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - RewritePath=/api/user/(?<segment>.*),/user/$\{segment}
+        - id: easychat_auth_route
+          uri: lb://easychat-auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/auth/(?<segment>.*),/auth/$\{segment}
+        - id: easychat_chat_route
+          uri: lb://easychat-chat-service
+          predicates:
+            - Path=/api/chat/**
+            - Cookie=uid,\d{19}
+          filters:
+            - RewritePath=/api/chat/(?<segment>.*),/chat/$\{segment}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easychat.chat.mapper.ChatHistoryMapper">
+
+    <resultMap id="chatInfoMap" type="com.easychat.chat.dto.ChatInfo">
+        <result property="userId" column="user_id"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="sessionTime" column="session_time"/>
+        <result property="friendUserId" column="friend_user_id"/>
+        <result property="friendRemark" column="friend_remark"/>
+        <result property="friendNickName" column="nick_name"/>
+        <result property="friendAvatar" column="avatar"/>
+        <association property="latestChatHistory" javaType="com.easychat.chat.entity.ChatHistory">
+            <result property="senderId" column="sender_id"/>
+            <result property="receiverId" column="receiver_id"/>
+            <result property="type" column="type"/>
+            <result property="content" column="content"/>
+            <result property="hasRead" column="has_read"/>
+            <result property="createTime" column="create_time"/>
+        </association>
+    </resultMap>
+
+    <select id="selectChatInfoList" parameterType="java.lang.String" resultMap="chatInfoMap">
+        select friend.user_id,
+               friend.session_id,
+               friend.session_time,
+               friend.friend_user_id,
+               friend.friend_remark,
+               user.nick_name,
+               user.avatar,
+               first_value(history.sender_id) over w   sender_id,
+               first_value(history.receiver_id) over w receiver_id,
+               first_value(history.type) over w        type,
+               first_value(history.content) over w     content,
+               first_value(history.has_read) over w    has_read,
+               first_value(history.create_time) over w create_time
+        from easychat_friend friend
+                 left join easychat_user user
+                           on friend.friend_user_id = user.id
+                 left join easychat_history history
+                           on friend.session_id = history.session_id
+        where friend.user_id = #{userId}
+          and friend.session_id != '0'
+            window w as (partition by history.session_id order by history.create_time desc)
+    </select>
+
+    <select id="selectChatInfo" parameterType="java.lang.String" resultMap="chatInfoMap">
+        select friend.user_id,
+               friend.session_id,
+               friend.session_time,
+               friend.friend_user_id,
+               friend.friend_remark,
+               user.nick_name,
+               user.avatar,
+               first_value(history.sender_id) over w   sender_id,
+               first_value(history.receiver_id) over w receiver_id,
+               first_value(history.type) over w        type,
+               first_value(history.content) over w     content,
+               first_value(history.has_read) over w    has_read,
+               first_value(history.create_time) over w create_time
+        from easychat_friend friend
+                 left join easychat_user user
+                           on friend.friend_user_id = user.id
+                 left join easychat_history history
+                           on friend.session_id = history.session_id
+        where friend.user_id = #{userId}
+          and friend.friend_user_id = #{friendUserId}
+            window w as (partition by history.session_id order by history.create_time desc)
+    </select>
+
+</mapper>

@@ -1,0 +1,49 @@
+server:
+  port: 20030
+  servlet:
+    context-path: /user
+
+spring:
+  application:
+    name: easychat-user-service
+  servlet:
+    multipart:
+      max-file-size: 2MB
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: ec0b2714-22be-45cc-800e-fa801b4e94db
+        cluster-name: shanghai
+        group: easychat
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/easychat?characterEncoding=utf-8
+      username: root
+      password: 123456
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 10000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      validation-query: select 1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    connect-timeout: 5000
+
+mybatis-plus:
+  configuration:
+    local-cache-scope: statement # 一级缓存
+    cache-enabled: false # 二级缓存
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: assign_id
+  mapper-locations: classpath:/mapper/*.xml

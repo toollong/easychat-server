@@ -1,0 +1,25 @@
+server:
+  port: 20050
+  servlet:
+    context-path: /file
+
+spring:
+  application:
+    name: easychat-filesystem-service
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: ec0b2714-22be-45cc-800e-fa801b4e94db
+        cluster-name: shanghai
+        group: easychat
+
+minio:
+  endpoint: "http://localhost:9000"
+  accessKey: "******"
+  secretKey: "******"
+  bucketName: "easychat"

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easychat.user.mapper.FriendVerifyMapper">
+
+    <resultMap id="verifyInfoMap" type="com.easychat.user.dto.VerifyInfo">
+        <result property="senderId" column="sender_id"/>
+        <result property="senderNickName" column="sender_nick_name"/>
+        <result property="senderAvatar" column="sender_avatar"/>
+        <result property="receiverId" column="receiver_id"/>
+        <result property="receiverNickName" column="receiver_nick_name"/>
+        <result property="receiverAvatar" column="receiver_avatar"/>
+        <result property="applyReason" column="apply_reason"/>
+        <result property="remark" column="remark"/>
+        <result property="status" column="status"/>
+        <result property="hasRead" column="has_read"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="selectVerifyInfoList" parameterType="java.lang.String" resultMap="verifyInfoMap">
+        select verify.sender_id,
+               verify.receiver_id,
+               verify.apply_reason,
+               verify.remark,
+               verify.status,
+               verify.has_read,
+               verify.create_time,
+               user_sender.nick_name   sender_nick_name,
+               user_sender.avatar      sender_avatar,
+               user_receiver.nick_name receiver_nick_name,
+               user_receiver.avatar    receiver_avatar
+        from easychat_friend_verify verify
+                 left join easychat_user user_sender
+                           on verify.sender_id = user_sender.id
+                 left join easychat_user user_receiver
+                           on verify.receiver_id = user_receiver.id
+        where verify.sender_id = #{userId}
+           or verify.receiver_id = #{userId}
+    </select>
+
+    <select id="selectVerifyInfo" parameterType="java.lang.String" resultMap="verifyInfoMap">
+        select verify.sender_id,
+               verify.receiver_id,
+               verify.apply_reason,
+               verify.remark,
+               verify.status,
+               verify.has_read,
+               verify.create_time,
+               user_sender.nick_name   sender_nick_name,
+               user_sender.avatar      sender_avatar,
+               user_receiver.nick_name receiver_nick_name,
+               user_receiver.avatar    receiver_avatar
+        from easychat_friend_verify verify
+                 left join easychat_user user_sender
+                           on verify.sender_id = user_sender.id
+                 left join easychat_user user_receiver
+                           on verify.receiver_id = user_receiver.id
+        where verify.sender_id = #{senderId}
+          and verify.receiver_id = #{receiverId}
+    </select>
+
+</mapper>

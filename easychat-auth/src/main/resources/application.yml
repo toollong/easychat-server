@@ -1,0 +1,22 @@
+server:
+  port: 20020
+  servlet:
+    context-path: /auth
+    session:
+      tracking-modes: cookie
+
+spring:
+  application:
+    name: easychat-auth-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: ec0b2714-22be-45cc-800e-fa801b4e94db
+        cluster-name: shanghai
+        group: easychat
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    connect-timeout: 5000
