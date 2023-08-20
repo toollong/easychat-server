@@ -6,9 +6,7 @@ easychat-server 是 EasyChat 项目的后端部分，采用微服务架构，使
 
 EasyChat 是一个可以在线聊天的即时通讯平台，完全由个人设计和开发，初衷主要是觉得好玩儿，顺便学习一些新东西，所以网站有些简陋，属实是本人的能力和财力有限。网站没有任何付费内容，所有内容完全免费，欢迎大家使用体验，也期待大佬们的交流与反馈。
 
-体验地址：[https://toollong.icu](https://toollong.icu)（我的用户名：toollong）
-
-关于网站的更多信息，[点击这里](https://toollong.icu/#/about)。
+体验地址：[https://toollong.icu](https://toollong.icu)（网站已于 2023.08.18 下线，运行时长 382 天）
 
 > ### 功能介绍
 
